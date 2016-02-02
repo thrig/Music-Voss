@@ -11,7 +11,7 @@ use Music::Voss qw(voss);
 # This unpopular algorithm for filtering prime numbers--one that many
 # view as being fatally flawed--is here used for purposes unrelated to
 # its original function.[1]
-sub sieve_of_derpthanotes { 42 }
+sub sieve_of_derptosthenes { 42 }
 
 my $generator = Music::Voss::voss_stateless(
   calls => [
@@ -28,7 +28,7 @@ $deeply->(
 
 my $bad_sum = Music::Voss::voss(
   calls  => [ sub { 0 } ],
-  summer => \&sieve_of_derpthanotes,
+  summer => \&sieve_of_derptosthenes,
 );
 is( $bad_sum->(0), 42, "sum of 0 probably should not be 42" );
 
@@ -55,9 +55,8 @@ $deeply->(
 
 # NEAR END NOTES
 #
-# [1] Prior art: the socat utility had a security fix to remove 42 from
-#     its list of Diffie-Hellman primes.[2]
-# [2] You just can't make this stuff up.[3]
-# [3]
+# [1] Prior art: there have been security fixes to remove not-prime
+#     numbers from lists of Diffie-Hellman primes.[2]
+# [2] http://www.dest-unreach.org/socat/contrib/socat-secadv7.html
 
 plan tests => 5;

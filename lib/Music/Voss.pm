@@ -10,10 +10,10 @@ package Music::Voss;
 use 5.010000;
 use strict;
 use warnings;
-use Carp qw/croak/;
+use Carp qw(croak);
 use Exporter 'import';
 use List::Util ();
-use Scalar::Util qw/looks_like_number/;
+use Scalar::Util qw(looks_like_number);
 
 our $VERSION = '0.01';
 
@@ -31,7 +31,7 @@ sub voss {
     croak "summer must be code reference";
   }
   my @nums = (0) x @{ $params{calls} };
-  sub {
+  return sub {
     my ($n) = @_;
     croak "input must be number" if !defined $n or !looks_like_number $n;
     for my $k ( 0 .. $#{ $params{calls} } ) {
@@ -39,7 +39,7 @@ sub voss {
         $nums[$k] = $params{calls}->[$k]->( $n, $k );
       }
     }
-    $params{summer}->(@nums);
+    return $params{summer}->(@nums);
   }
 }
 
@@ -53,14 +53,14 @@ sub voss_stateless {
   } elsif ( ref $params{summer} ne 'CODE' ) {
     croak "summer must be code reference";
   }
-  sub {
+  return sub {
     my ($n) = @_;
     croak "input must be number" if !defined $n or !looks_like_number $n;
     my @nums;
     for my $k ( 0 .. $#{ $params{calls} } ) {
       push @nums, $params{calls}->[$k]->( $n, $k ) if $n % 2**$k == 0;
     }
-    $params{summer}->(@nums);
+    return $params{summer}->(@nums);
   }
 }
 
@@ -97,9 +97,9 @@ Music::Voss - functions for fractal noise generation functions
     printf "%d %d %d\n", $x, $genf->($x), $geny->($x);
   }
 
-  # or to obtain a list of values (NOTE TODO the voss() generated
-  # functions maintain state and there is no way to inspect or reset
-  # that state)
+  # or to obtain a list of values (NOTE TODO FIXME the voss() generated
+  # functions maintain state and there is (as yet) no way to inspect or
+  # reset that state)
   my @values = map { $genf->($_) } 0..21;
 
 =head1 DESCRIPTION
@@ -117,18 +117,19 @@ full module path.
 
 =item B<voss>
 
-Voss fractal generator that uses powers-of-two modulus math on the array
-index of the list of given C<calls> to determine when the result from a
-particular call should be saved to an array internal to the generated
-function. A custom C<summer> function may be supplied that should sum
-that list of numbers; the default is to call C<sum0> from L<List::Util>.
+This function returns a function that in turn should be called with
+(ideally successive) integers. The generated function uses powers-of-two
+modulus math on the array index of the list of given C<calls> to
+determine when the result from a particular call should be saved to an
+array internal to the generated function. A custom C<summer> function
+may be supplied to B<voss> that will sum the resulting list of numbers;
+the default is to call C<sum0> of L<List::Util> and return that sum.
 
-The C<calls> functions are passed two (optional) arguments, the given
-number, and the array index that triggered the call. C<calls>
-functions should ideally return a number. Typically, the C<calls>
-return random values, though other patterns are certainly worth
-experimenting with, such as a mix of random values and other values
-that are iterated through:
+The C<calls> functions are passed two arguments, the given number, and
+the array index that triggered the call. C<calls> functions probably
+should return a number. Typically, the C<calls> return random values,
+though other patterns are certainly worth experimenting with, such as a
+mix of random values and other values that are iterated through:
 
   use Music::AtonalUtil;
   use Music::Voss qw(voss);
@@ -145,10 +146,9 @@ that are iterated through:
     ]);
 
 The generated function ideally should be fed sequences of integers that
-increment by one (unless, for some reason, particular values should be
-skipped). This means that the slower-changing values from higher array
-indexed C<calls> will persist through subsequent calls. If this is a
-problem, consider instead the
+increment by one. This means that the slower-changing values from higher
+array indexed C<calls> will persist through subsequent calls. If this is
+a problem, consider instead the
 
 =item B<voss_stateless>
 
@@ -174,6 +174,8 @@ and increment by one for each successive call).
 
 =back
 
+TODO Weierstrass functions, Brownian motion, etc.
+
 =head1 BUGS
 
 =head2 Reporting Bugs
@@ -193,7 +195,10 @@ not be used in a threaded environment, on account of unknown results
 should multiple threads call the same function around the same time.
 This may actually be a feature for experimental musical composition.
 
-The not nearly enough functions written problem.
+The not nearly enough functions written problem. Also, need multiple
+return values from the function returning functions, with the remaining
+functions being means to reset or otherwise interact with any state
+maintained by the function.
 
 The lack of testing. (Bad input values, whether anything sketchy is
 going on with the closures, etc.)
