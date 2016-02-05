@@ -155,7 +155,7 @@ Music::Voss - functions for fractal noise generation functions
   }
   # or to obtain a list of values (NOTE TODO FIXME the powers() generated
   # functions maintain state and there is (as yet) no way to inspect or
-  # reset that state)
+  # reset that state; for now generate a new function if needed.)
   my @values = map { $genf->($_) } 0..21;
 
 =head1 DESCRIPTION
@@ -257,8 +257,6 @@ and increment by one for each successive call).
 
 =back
 
-TODO Weierstrass functions, Brownian motion, etc.
-
 =head1 BUGS
 
 =head2 Reporting Bugs
@@ -278,13 +276,14 @@ not be used in a threaded environment, on account of unknown results
 should multiple threads call the same function around the same time.
 This may actually be a feature for experimental musical composition.
 
-The not nearly enough functions written problem. Also, need multiple
-return values from the function returning functions, with the remaining
-functions being means to reset or otherwise interact with any state
-maintained by the function.
+May need multiple return values from the function returning functions,
+with the remaining functions being means to reset or otherwise interact
+with any state maintained by the function.
 
 The lack of testing. (Bad input values, whether anything sketchy is
 going on with the closures, etc.)
+
+Probably should add a weierstrass method, but that's more work.
 
 =head1 SEE ALSO
 
