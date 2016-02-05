@@ -9,10 +9,11 @@ use Music::Voss;
 
 can_ok('Music::Voss', qw(bitchange));
 
-my $fun = Music::Voss::bitchange( roll => sub { defined $_[0] ? $_[0] : 0 } );
-
-for my $x (0..21) {
-  diag sprintf "%d %d", $x, $fun->($x);
-}
+# TODO actual tests
+#my $fun = Music::Voss::bitchange( roll => sub { defined $_[0] ? $_[0] : 0 } );
+#
+#for my $x (0..21) {
+#  diag sprintf "%d %d", $x, $fun->($x);
+#}
 
 plan tests => 1;
