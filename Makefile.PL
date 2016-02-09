@@ -33,7 +33,7 @@ my %params = (
   PREREQ_PM => {
     'Carp'         => 0,
     'Exporter'     => 0,
-    'List::Util'   => 0,
+    'List::Util'   => 1.26,    # for sum0, sigh
     'Scalar::Util' => 0,
     'strict'       => 0,
   },

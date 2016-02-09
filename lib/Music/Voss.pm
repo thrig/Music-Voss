@@ -14,7 +14,7 @@ use Exporter 'import';
 use List::Util ();
 use Scalar::Util qw(looks_like_number);
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 our @EXPORT_OK = qw(bitchange powers powers_stateless);
 
