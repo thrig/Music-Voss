@@ -14,7 +14,7 @@ use Exporter 'import';
 use List::Util ();
 use Scalar::Util qw(looks_like_number);
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 our @EXPORT_OK = qw(bitchange powers powers_stateless);
 
@@ -265,7 +265,7 @@ and increment by one for each successive call).
 =head2 Reporting Bugs
 
 Please report any bugs or feature requests to
-C<bug-music-pitchnum at rt.cpan.org>, or through the web interface at
+C<bug-music-voss at rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Music-Voss>.
 
 Patches might best be applied towards:
