@@ -297,6 +297,9 @@ suitable to pass to lilypond. L<Music::Canon> (or the C<canonical>
 program by way of L<App::MusicTools>) may also be of interest, as well
 as L<Music::AtonalUtil> for various music related functions.
 
+L<Music::RecRhythm> is a similar if different means to change rhythms
+over time.
+
 =head1 REFERENCES
 
 =over 4
